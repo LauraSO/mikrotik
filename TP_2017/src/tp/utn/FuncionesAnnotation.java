@@ -11,10 +11,9 @@ public class FuncionesAnnotation {
 	public static <T> String obtenerNombreDeTabla(Class<T> dtoClass) {
 	
 	String nombreTabla="";
-	final Annotation anotacionObtenida = dtoClass.getAnnotation(Table.class);
-	if (anotacionObtenida != null && anotacionObtenida instanceof Table) {
-	final Table anotacionTable = (Table) anotacionObtenida;
-	 nombreTabla = anotacionTable.name();
+	final Table anotacionObtenida = dtoClass.getAnnotation(Table.class);
+	if (anotacionObtenida != null) {
+	 nombreTabla = anotacionObtenida.name();
 	}
 	
 	return nombreTabla;
@@ -33,14 +32,13 @@ public class FuncionesAnnotation {
 	
 	for (final Field variable : variables) {
 
-		final Annotation anotacionObtenida = variable.getAnnotation(Column.class);
+		final Column anotacionObtenida = variable.getAnnotation(Column.class);
 		
 		nombreDeTabla=obtenerNombreDeTabla(variable.getType()); 
 
-		if (anotacionObtenida != null && anotacionObtenida instanceof Column) {
+		if (anotacionObtenida != null) {
 				
-		final Column anotacionColumn = (Column) anotacionObtenida;
-			String nombreAtributo = anotacionColumn.name();
+			String nombreAtributo = anotacionObtenida.name();
 								
 			atributosAux = nombreDeTabla1+"."+nombreAtributo;
 			
@@ -49,7 +47,7 @@ public class FuncionesAnnotation {
 			if(nombreDeTabla!="") {
 				
 				atributosAux ="INNER JOIN "+ nombreDeTabla + " " + nombreDeTabla ; 
-				atributosAux +=" ON "+ nombreDeTabla+"."+nombreAtributo + "=" + nombreDeTabla +"."+ nombreAtributo;
+				atributosAux +=" ON "+ nombreDeTabla1+"."+nombreAtributo + "=" + nombreDeTabla +"."+ nombreAtributo;
 				queryObjet.joins.add(atributosAux);
 				
 				obtenerCampos(variable.getType(), queryObjet);
