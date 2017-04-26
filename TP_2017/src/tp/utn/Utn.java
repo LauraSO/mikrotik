@@ -1,5 +1,6 @@
 package tp.utn;
 
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.util.List;
 
@@ -9,10 +10,32 @@ public class Utn
 	public static <T> String _query(Class<T> dtoClass, String xql)
 	{
 			
-			String sql = "";
-			sql +="SELECT "+ FuncionesAnnotation.obtenerCampos(dtoClass)+ " ";
+			Query queryObjet = new Query();
 			
-			sql +="FROM "+ FuncionesAnnotation.obtenerNombreDeTabla(dtoClass)+ " ";
+			queryObjet.tabla= FuncionesAnnotation.obtenerNombreDeTabla(dtoClass);
+			
+			FuncionesAnnotation.obtenerCampos(dtoClass, queryObjet);
+			
+			String sql = "";
+			sql +="SELECT ";
+			
+			for (final String campo : queryObjet.campos){
+				
+			sql += campo + ", ";
+			
+			}
+			
+			
+			sql +="FROM "+ queryObjet.tabla+ " " +queryObjet.tabla.charAt(0)+" ";
+				
+			for (final String join : queryObjet.joins){
+				
+				sql += "\n";
+				sql += join + " ";
+				
+				}
+			
+			sql += "\n";
 			
 			sql +="WHERE "+ xql;
 			

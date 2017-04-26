@@ -10,44 +10,59 @@ public class FuncionesAnnotation {
 	
 	public static <T> String obtenerNombreDeTabla(Class<T> dtoClass) {
 	
-	
+	String nombreTabla="";
 	final Annotation anotacionObtenida = dtoClass.getAnnotation(Table.class);
+	if (anotacionObtenida != null && anotacionObtenida instanceof Table) {
 	final Table anotacionTable = (Table) anotacionObtenida;
-	String nombreTabla = anotacionTable.name();
-
+	 nombreTabla = anotacionTable.name();
+	}
+	
 	return nombreTabla;
 	}
 	
 	
-	public static <T> String  obtenerCampos(Class<T> dtoClass) { 
+	public static void obtenerCampos(Class<?> dtoClass, Query queryObjet ) { 
 		
 	
-	
+	String nombreDeTabla1=obtenerNombreDeTabla(dtoClass);
+
 	final Field[] variables = dtoClass.getDeclaredFields();
 	
 	String atributosAux="";
-	String atributos="";
+	String nombreDeTabla="";
 	
 	for (final Field variable : variables) {
 
 		final Annotation anotacionObtenida = variable.getAnnotation(Column.class);
+		
+		nombreDeTabla=obtenerNombreDeTabla(variable.getType()); 
 
 		if (anotacionObtenida != null && anotacionObtenida instanceof Column) {
-			final Column anotacionColumn = (Column) anotacionObtenida;
-
-			String nombreAtributo = anotacionColumn.name();
-			
-			
-			atributosAux += nombreAtributo + ", ";
-			
-			atributos = atributosAux.substring(0, atributosAux.length()-2); 
 				
-		}
+		final Column anotacionColumn = (Column) anotacionObtenida;
+			String nombreAtributo = anotacionColumn.name();
+								
+			atributosAux = nombreDeTabla1+"."+nombreAtributo;
+			
+			queryObjet.campos.add(atributosAux);
+			
+			if(nombreDeTabla!="") {
+				
+				atributosAux ="INNER JOIN "+ nombreDeTabla + " " + nombreDeTabla ; 
+				atributosAux +=" ON "+ nombreDeTabla+"."+nombreAtributo + "=" + nombreDeTabla +"."+ nombreAtributo;
+				queryObjet.joins.add(atributosAux);
+				
+				obtenerCampos(variable.getType(), queryObjet);
+				
+				
+				}
+			
+			}
 		
-		
-		}
+		}	
 	
-	return atributos;
+	
+	
 }
 
 	
