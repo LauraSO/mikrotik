@@ -106,18 +106,6 @@ public class FuncionesAnnotation {
 			
 				}
 			
-			}else {
-				final Relation anotacionObtenida2 = variable.getAnnotation(Relation.class);
-				if (anotacionObtenida2 != null) {
-					String nombreAtributo1 = obtenerID(dtoClass); 
-					String nombreAtributo2 = obtenerFk(anotacionObtenida2.type(), dtoClass);
-					nombreDeTabla=obtenerNombreDeTabla(anotacionObtenida2.type());
-					
-					atributosAux ="INNER JOIN "+ nombreDeTabla + " " + nombreDeTabla ; 
-					atributosAux +=" ON "+ nombreDeTabla1+"."+nombreAtributo1 + "=" + nombreDeTabla +"."+ nombreAtributo2;
-					queryObjet.joins.add(atributosAux);
-		
-				}
 			}
 		
 		
@@ -129,3 +117,16 @@ public class FuncionesAnnotation {
 
 	
 }
+
+
+/*final Relation anotacionObtenida2 = variable.getAnnotation(Relation.class);
+if (anotacionObtenida2 != null) {
+	String nombreAtributo1 = obtenerID(dtoClass); 
+	String nombreAtributo2 = obtenerFk(anotacionObtenida2.type(), dtoClass);
+	nombreDeTabla=obtenerNombreDeTabla(anotacionObtenida2.type());
+	
+	atributosAux ="INNER JOIN "+ nombreDeTabla + " " + nombreDeTabla ; 
+	atributosAux +=" ON "+ nombreDeTabla1+"."+nombreAtributo1 + "=" + nombreDeTabla +"."+ nombreAtributo2;
+	queryObjet.joins.add(atributosAux);
+
+*/

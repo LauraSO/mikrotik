@@ -11,19 +11,19 @@ public class inicio {
 
 	
 		
-		String xql ="id_persona=1";
-		
-		String query = Utn._query(Persona.class, xql);
-		
-		System.out.println (query);
-		
-		
-		
 		//String xql ="id_persona=1";
-				
-		//String query = Utn._query(Direccion.class, xql);
+		
+		//String query = Utn._query(Persona.class, xql);
 		
 		//System.out.println (query);
+		
+		
+		
+		String xql ="id_persona=1";
+				
+		String query = Utn._query(Direccion.class, xql);
+		
+		System.out.println (query);
 		
 		
 		
